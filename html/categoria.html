@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Categoría | Noticias Tech</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../css/styles.css" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">NoticiasTech</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Inicio</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">Categorías</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="categoria.html?cat=programacion">Programación</a></li>
+              <li><a class="dropdown-item" href="categoria.html?cat=ia">IA</a></li>
+              <li><a class="dropdown-item" href="categoria.html?cat=gadgets">Gadgets</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link" href="enviar.html">Enviar</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-5 mt-5">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="../index.html">Inicio</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><span id="crumb-cat">Categoría</span></li>
+        </ol>
+      </nav>
+
+      <header class="mb-4">
+        <h1 class="display-6" id="titulo-categoria">Noticias por categoría</h1>
+        <p class="text-muted">Explora lo último en <span id="sub-cat">tecnología</span>.</p>
+      </header>
+
+      <div id="grid-categoria"></div>
+      <noscript>
+        <div class="alert alert-warning">Activa JavaScript para ver las noticias de la categoría.</div>
+      </noscript>
+
+      <nav aria-label="Paginación de categoría" class="mt-4">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+          <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+        </ul>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 NoticiasTech - Todos los derechos reservados</p>
+      <small>Desarrollado con Bootstrap 5</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/newsService.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/app.js"></script>
+
+  <script>
+    (function () {
+      const MAP = { programacion: 'Programación', ia: 'Inteligencia Artificial', gadgets: 'Gadgets' };
+
+      const params = new URLSearchParams(window.location.search);
+      const cat = (params.get('cat') || '').toLowerCase();
+
+      const nombre = MAP[cat] || 'Tecnología';
+      document.getElementById('titulo-categoria').textContent = nombre;
+      document.getElementById('sub-cat').textContent = nombre.toLowerCase();
+      document.getElementById('crumb-cat').textContent = nombre;
+
+      if (typeof initStore === 'function') initStore();
+      const noticias = (typeof listByCategoria === 'function') ? listByCategoria(cat) : [];
+
+      const cont = document.getElementById('grid-categoria');
+      if (!noticias.length) {
+        cont.innerHTML = '<div class="alert alert-info">No hay noticias en esta categoría todavía.</div>';
+        return;
+      }
+      if (typeof renderListaNoticias === 'function') {
+        renderListaNoticias(cont, noticias);
+      } else {
+        cont.innerHTML = '<div class="alert alert-danger">No se pudo renderizar la lista de noticias.</div>';
+      }
+    })();
+  </script>
+</body>
+</html>

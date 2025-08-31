@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Noticias Tech</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">NoticiasTech</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">Categorías</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="html/categoria.html?cat=programacion">Programación</a>
+                            </li>
+                            <li><a class="dropdown-item" href="html/categoria.html?cat=ia">IA</a></li>
+                            <li><a class="dropdown-item" href="html/categoria.html?cat=gadgets">Gadgets</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="html/contacto.html">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="html/enviar.html">Enviar</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pt-5 mt-5">
+        <div class="container">
+            <h1 class="text-center mb-4">Titulares Destacados</h1>
+            <div id="hero-destacados"></div>
+            <noscript>
+                <div class="alert alert-warning mt-3">Activa JavaScript para ver los titulares destacados.</div>
+            </noscript>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-4 text-center">Últimas noticias</h2>
+            <div id="ultimas"></div>
+            <noscript>
+                <div class="alert alert-warning mt-3">Activa JavaScript para ver las últimas noticias.</div>
+            </noscript>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-1">&copy; 2025 NoticiasTech - Todos los derechos reservados</p>
+            <small>Desarrollado con Bootstrap 5</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="js/data.js"></script>
+    <script src="js/newsService.js"></script>
+    <script src="js/render.js"></script>
+
+    <script src="js/app.js"></script>
+
+    <script>
+        (function () {
+            if (typeof initStore === 'function') initStore();
+
+            const heroCont = document.getElementById('hero-destacados');
+            if (typeof listNoticias === 'function' && typeof renderCard === 'function') {
+                const top3 = listNoticias().slice(0, 3);
+                heroCont.innerHTML = `<div class="row g-4">${top3.map(renderCard).join('')}</div>`;
+            } else {
+                heroCont.innerHTML = '<div class="alert alert-info">No hay titulares para mostrar.</div>';
+            }
+
+            const ultimas = (typeof listNoticias === 'function') ? listNoticias().slice(0, 6) : [];
+            const cont = document.getElementById('ultimas');
+            if (typeof renderListaNoticias === 'function') {
+                renderListaNoticias(cont, ultimas);
+            } else {
+                cont.innerHTML = '<div class="alert alert-info">No hay noticias para mostrar.</div>';
+            }
+        })();
+    </script>
+</body>
+
+</html>
